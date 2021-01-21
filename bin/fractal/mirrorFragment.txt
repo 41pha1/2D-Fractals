@@ -1,0 +1,19 @@
+#version 140
+
+in vec2 textureCoords;
+
+out vec4 out_Colour;
+
+uniform sampler2D colourTexture;
+uniform float mirrorX;
+uniform float mirrorY;
+
+void main(void)
+{
+	vec2 mirroredCoords = vec2(textureCoords);
+	if(mirrorX>0.5 && mirroredCoords.x>0.5)
+		mirroredCoords.x = 1-mirroredCoords.x;
+	if(mirrorY>0.5 && mirroredCoords.y>0.5)
+		mirroredCoords.y = 1-mirroredCoords.y;
+	out_Colour = texture(colourTexture, mirroredCoords);
+}

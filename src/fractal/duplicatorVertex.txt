@@ -1,0 +1,26 @@
+#version 140
+
+in vec2 position;
+
+uniform mat4 transformation;
+uniform float aspectRatio;
+uniform float clear;
+
+out vec2 textureCoords;
+
+void main(void)
+{
+	if(clear > 0.5)
+	{
+		gl_Position = vec4(position, 0.0, 1.0);
+	}else
+	{		
+		vec2 adjustedPosition = vec2(position);
+		adjustedPosition.x*=aspectRatio;
+		vec2 transformedPos = (vec4(adjustedPosition, 0, 1) * transformation).xy;
+		transformedPos += vec2(transformation[3][0],transformation[3][1]);
+		transformedPos.x/=aspectRatio;
+		gl_Position = vec4(transformedPos, 0.0, 1.0);
+	}
+	textureCoords = position * 0.5 + 0.5;
+}
